@@ -10,6 +10,30 @@ import MeetingCard from './MeetingCard';
 import Loader from './Loader';
 import { useToast } from './ui/use-toast';
 
+const formatMeetingDate = (dateInput) => {
+  const date = new Date(dateInput);
+  let formattedDate = new Intl.DateTimeFormat('ro-RO', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+
+  // Capitalize the first letter of each word in the date
+  formattedDate = formattedDate
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  let formattedTime = new Intl.DateTimeFormat('ro-RO', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  }).format(date).toUpperCase();
+
+  return `${formattedDate} - ${formattedTime}`;
+};
+
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const { toast } = useToast();
 
@@ -56,7 +80,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
         setRecordings(recordings)
       } catch (err) {
-        toast({ title: 'Încearcă mai târziu', duration: 5000 })
+        toast({ title: 'Încearcă mai târziu', status: 'error', duration: 5000 })
       }
 
     }
@@ -76,7 +100,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
         <MeetingCard
           key={meeting?.id}
           title={meeting.state?.custom?.description?.substring(0, 25) || meeting?.filename?.substring(0, 20) || 'Căsuța Noastră'}
-          date={meeting.state?.startsAt.toLocaleString() || meeting.start_time.toLocaleString()}
+          date={formatMeetingDate(meeting.state?.startsAt || meeting.start_time)}
           icon={
             type === 'ended'
               ? '/icons/previous.svg'

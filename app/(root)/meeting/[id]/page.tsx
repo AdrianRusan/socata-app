@@ -25,6 +25,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
             <MeetingRoom />
           )}
         </StreamTheme>
+
       </StreamCall>
     </main>
 
