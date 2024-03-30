@@ -53,7 +53,7 @@ const PersonalRoom = () => {
       <div className="flex w-full flex-col gap-8 xl:max-w-[900px]">
         <Table
           title='Ce-i asta?'
-          description={`Camera de conferințe a lui ${(user?.username).replace(/(^|\s)\S/g, (l: string) => l.toUpperCase())}`}
+          description={`Camera de conferințe a lui ${user?.username}`}
         />
         <Table
           title='Id-ul camerei de conferințe'
